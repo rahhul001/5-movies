@@ -1,0 +1,45 @@
+{
+  "name": "5-tr-moviez-complete",
+  "version": "1.0.0",
+  "description": "Complete movie download website with admin dashboard and database",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'Build complete'",
+    "dev": "nodemon server.js",
+    "install-deps": "npm install",
+    "setup": "npm install && mkdir -p public data"
+  },
+  "keywords": [
+    "movie",
+    "download",
+    "website",
+    "admin",
+    "dashboard",
+    "vercel",
+    "database",
+    "blob-storage"
+  ],
+  "author": "5 TR Moviez",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/blob": "^0.15.0",
+    "@vercel/kv": "^1.0.0",
+    "@vercel/postgres": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/5-tr-moviez-complete.git"
+  },
+  "homepage": "https://your-app-name.vercel.app"
+}

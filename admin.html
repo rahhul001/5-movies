@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - 5 TR Moviez</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="sidebar-link active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a></li>
+                <li><a href="#movies" class="sidebar-link" onclick="showSection('movies')">
+                    <i class="fas fa-film"></i> Manage Movies
+                </a></li>
+                <li><a href="#banner" class="sidebar-link" onclick="showSection('banner')">
+                    <i class="fas fa-image"></i> Banner Settings
+                </a></li>
+                <li><a href="#downloads" class="sidebar-link" onclick="showSection('downloads')">
+                    <i class="fas fa-download"></i> Download Links
+                </a></li>
+                <li><a href="#analytics" class="sidebar-link" onclick="showSection('analytics')">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </a></li>
+                <li><a href="#settings" class="sidebar-link" onclick="showSection('settings')">
+                    <i class="fas fa-cog"></i> Settings
+                </a></li>
+                <li><a href="index.html" class="sidebar-link">
+                    <i class="fas fa-home"></i> Back to Site
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Admin Dashboard</h1>
+                <div class="admin-actions">
+                    <button class="btn btn-primary" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="admin-section active">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-movies">0</h3>
+                            <p>Total Movies</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-downloads">0</h3>
+                            <p>Total Downloads</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-views">0</h3>
+                            <p>Total Views</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="recent-movies">
+                        <h3>Recent Movies</h3>
+                        <div class="recent-movies-list" id="recent-movies-list">
+                            <!-- Recent movies will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Movies Management Section -->
+            <section id="movies-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Movies</h2>
+                    <div class="admin-controls">
+                        <button class="btn btn-primary" onclick="openMovieModal()">
+                            <i class="fas fa-plus"></i> Add New Movie
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportMovies()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn btn-secondary" onclick="importMovies()">
+                            <i class="fas fa-upload"></i> Import
+                        </button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleImport(event)">
+                    </div>
+                </div>
+
+                <div class="movies-controls">
+                    <div class="search-controls">
+                        <input type="text" id="admin-search" placeholder="Search movies..." onkeyup="filterMovies()">
+                        <select id="category-filter" onchange="filterMovies()">
+                            <option value="">All Categories</option>
+                            <option value="tamil">Tamil</option>
+                            <option value="telugu">Telugu</option>
+                            <option value="kannada">Kannada</option>
+                            <option value="english">English</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="clearFilters()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                    <div class="bulk-actions">
+                        <button class="btn btn-danger" onclick="bulkDelete()">
+                            <i class="fas fa-trash"></i> Delete Selected
+                        </button>
+                        <span id="selected-count">0 selected</span>
+                    </div>
+                </div>
+
+                <div class="movies-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all" onchange="toggleSelectAll()"></th>
+                                <th>Poster</th>
+                                <th>Title</th>
+                                <th>Year</th>
+                                <th>Category</th>
+                                <th>Genre</th>
+                                <th>Rating</th>
+                                <th>Downloads</th>
+                                <th>Views</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movies-table-body">
+                            <!-- Movies will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Banner Management Section -->
+            <section id="banner-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Banner Settings</h2>
+                </div>
+
+                <div class="banner-settings">
+                    <div class="form-group">
+                        <label for="banner-title-input">Banner Title</label>
+                        <input type="text" id="banner-title-input" placeholder="Enter banner title">
+                    </div>
+                    <div class="form-group">
+                        <label for="banner-subtitle-input">Banner Subtitle</label>
+                        <input type="text" id="banner-subtitle-input" placeholder="Enter banner subtitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="banner-bg-input">Background Image URL</label>
+                        <input type="url" id="banner-bg-input" placeholder="Enter background image URL">
+                    </div>
+                    <button class="btn btn-primary" onclick="updateBanner()">
+                        <i class="fas fa-save"></i> Update Banner
+                    </button>
+                </div>
+
+                <div class="banner-preview">
+                    <h3>Banner Preview</h3>
+                    <div class="preview-banner" id="banner-preview">
+                        <div class="banner-content">
+                            <h2 id="preview-title">Welcome to 5 TR Moviez</h2>
+                            <p id="preview-subtitle">Download your favorite movies in HD quality</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download Links Management Section -->
+            <section id="downloads-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Download Links</h2>
+                </div>
+
+                <div class="download-links-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Movie</th>
+                                <th>Quality</th>
+                                <th>Size</th>
+                                <th>Download Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="downloads-table-body">
+                            <!-- Download links will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Analytics & Reports</h2>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Top Movies by Downloads</h3>
+                        <div class="analytics-list" id="top-downloads">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Top Movies by Views</h3>
+                        <div class="analytics-list" id="top-views">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Category Distribution</h3>
+                        <div class="category-stats" id="category-distribution">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Monthly Stats</h3>
+                        <div class="monthly-stats" id="monthly-stats">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="admin-section">
+                <div class="section-header">
+                    <h2>System Settings</h2>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>General Settings</h3>
+                        <div class="form-group">
+                            <label for="site-name">Site Name</label>
+                            <input type="text" id="site-name" value="5 TR Moviez">
+                        </div>
+                        <div class="form-group">
+                            <label for="max-downloads">Max Downloads per Movie</label>
+                            <input type="number" id="max-downloads" value="10" min="1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="auto-cleanup">Auto Cleanup (days)</label>
+                            <input type="number" id="auto-cleanup" value="30" min="1" max="365">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveGeneralSettings()">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Security Settings</h3>
+                        <div class="form-group">
+                            <label for="admin-username-new">Admin Username</label>
+                            <input type="text" id="admin-username-new" value="admin">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password-new">New Password</label>
+                            <input type="password" id="admin-password-new">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password-confirm">Confirm Password</label>
+                            <input type="password" id="admin-password-confirm">
+                        </div>
+                        <button class="btn btn-primary" onclick="changeAdminPassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Database Management</h3>
+                        <div class="database-actions">
+                            <button class="btn btn-secondary" onclick="backupDatabase()">
+                                <i class="fas fa-download"></i> Backup Data
+                            </button>
+                            <button class="btn btn-warning" onclick="resetDatabase()">
+                                <i class="fas fa-trash"></i> Reset Database
+                            </button>
+                            <button class="btn btn-info" onclick="clearCache()">
+                                <i class="fas fa-broom"></i> Clear Cache
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Movie Modal -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content large-modal">
+            <span class="close" onclick="closeMovieModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Movie</h2>
+            </div>
+            <div class="modal-body">
+                <form id="movie-form" class="movie-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="movie-title">Movie Title *</label>
+                            <input type="text" id="movie-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="movie-year">Release Year *</label>
+                            <input type="number" id="movie-year" min="1900" max="2030" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="movie-category">Category *</label>
+                            <select id="movie-category" required>
+                                <option value="">Select Category</option>
+                                <option value="tamil">Tamil</option>
+                                <option value="telugu">Telugu</option>
+                                <option value="kannada">Kannada</option>
+                                <option value="english">English</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="movie-rating">Rating (1-10)</label>
+                            <input type="number" id="movie-rating" min="1" max="10" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="movie-genre">Genre *</label>
+                            <input type="text" id="movie-genre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="movie-poster">Poster URL *</label>
+                            <input type="url" id="movie-poster" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="movie-description">Description</label>
+                        <textarea id="movie-description" rows="4"></textarea>
+                    </div>
+
+                    <div class="download-links-section">
+                        <h3>Download Links</h3>
+                        <div id="download-links-container">
+                            <div class="download-link-item">
+                                <div class="form-group">
+                                    <label>Quality</label>
+                                    <input type="text" placeholder="e.g., HD, 1080p" class="quality-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Size</label>
+                                    <input type="text" placeholder="e.g., 1.2 GB" class="size-input">
+                                </div>
+                                <div class="form-group">
+                                    <label>Download Link</label>
+                                    <input type="url" placeholder="Download URL" class="link-input">
+                                </div>
+                                <button type="button" class="btn btn-danger" onclick="removeDownloadLink(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addDownloadLink()">
+                            <i class="fas fa-plus"></i> Add Download Link
+                        </button>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeMovieModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Movie
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+            </div>
+            <div class="modal-body">
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="admin-username">Username</label>
+                        <input type="text" id="admin-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Password</label>
+                        <input type="password" id="admin-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load API client -->
+    <script src="api-client.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>

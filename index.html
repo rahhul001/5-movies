@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 TR Moviez - Download Movies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1><i class="fas fa-film"></i> 5 TR Moviez</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#tamil" class="nav-link">Tamil</a></li>
+                    <li><a href="#telugu" class="nav-link">Telugu</a></li>
+                    <li><a href="#kannada" class="nav-link">Kannada</a></li>
+                    <li><a href="#english" class="nav-link">English</a></li>
+                    <li><a href="admin.html" class="nav-link admin-link"><i class="fas fa-cog"></i> Admin</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Banner Section -->
+        <section class="banner" id="banner">
+            <div class="banner-content">
+                <h2 id="banner-title">Welcome to 5 TR Moviez</h2>
+                <p id="banner-subtitle">Download your favorite movies in HD quality</p>
+                <button class="banner-btn" onclick="scrollToMovies()">Browse Movies</button>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories">
+            <div class="container">
+                <h2>Movie Categories</h2>
+                <div class="category-grid">
+                    <div class="category-card" onclick="showCategory('tamil')">
+                        <div class="category-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Tamil Movies</h3>
+                        <p>Latest Tamil blockbusters</p>
+                    </div>
+                    <div class="category-card" onclick="showCategory('telugu')">
+                        <div class="category-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Telugu Movies</h3>
+                        <p>Popular Telugu cinema</p>
+                    </div>
+                    <div class="category-card" onclick="showCategory('kannada')">
+                        <div class="category-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Kannada Movies</h3>
+                        <p>Best Kannada films</p>
+                    </div>
+                    <div class="category-card" onclick="showCategory('english')">
+                        <div class="category-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3>English Movies</h3>
+                        <p>Hollywood blockbusters</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movies Section -->
+        <section class="movies-section" id="movies-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 id="section-title">All Movies</h2>
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Search movies...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="movies-grid" id="movies-grid">
+                    <!-- Movies will be loaded here dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Movie Modal -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div class="movie-poster">
+                    <img id="modal-poster" src="" alt="Movie Poster">
+                </div>
+                <div class="movie-details">
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-genre"></p>
+                    <p id="modal-description"></p>
+                    <div class="download-options" id="download-options">
+                        <!-- Download options will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 5 TR Moviez. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load API client -->
+    <script src="api-client.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
