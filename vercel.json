@@ -19,10 +19,5 @@
   "env": {
     "NODE_ENV": "production",
     "DATABASE_TYPE": "kv"
-  },
-  "functions": {
-    "server.js": {
-      "maxDuration": 30
-    }
   }
 }
